@@ -1,19 +1,22 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const connectDB = require("./db/dbConnection");
 const User = require("./db/user");
 const port = 8000;
 
 app.use(express.json());
+app.use(express.urlencoded());
+app.use(cors());
 
 connectDB();
 
 // registration [POST]
 app.post("/registration", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, fullName, email } = req.body;
     console.log("username -> ", username, ": password ->", password);
-    const userData = new User({ username, password });
+    const userData = new User({ username, password, fullName, email });
     await userData.save();
     res.status(201).json({ message: "Registration successful." });
   } catch (error) {
