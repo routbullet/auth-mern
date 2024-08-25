@@ -1,6 +1,7 @@
-import React, { useEffect, useState, ChangeEvent } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import Cookies from "js-cookie";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   id: string;
@@ -14,7 +15,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 5%;
   background: linear-gradient(135deg, #6e8efb, #a777e3);
   min-height: 100vh;
   color: #ffffff;
@@ -69,9 +70,33 @@ const Loading = styled.div`
   font-size: 18px;
 `;
 
-const Error = styled.div`
+const ErrorStyle = styled.div`
   color: #ff0000;
   font-size: 18px;
+`;
+
+const LogoutButton = styled.button`
+  position: absolute;
+  right: 10%;
+  top: 8%;
+  background-color: #ff4b4b;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: #e03b3b;
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const UsersView = () => {
@@ -80,10 +105,12 @@ export const UsersView = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
       const token = Cookies.get("jwtToken");
+      if (!token) navigate("/");
       try {
         const response = await fetch("http://localhost:8000/user", {
           headers: {
@@ -122,6 +149,11 @@ export const UsersView = () => {
     setSearchQuery(e.target.value);
   };
 
+  const handleLogout = () => {
+    Cookies.remove("jwtToken");
+    navigate("/");
+  };
+
   if (loading) {
     return (
       <Container>
@@ -133,13 +165,14 @@ export const UsersView = () => {
   if (error) {
     return (
       <Container>
-        <Error>Error: {error}</Error>
+        <ErrorStyle>Error: {error}</ErrorStyle>
       </Container>
     );
   }
 
   return (
     <Container>
+      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       <Title>User List</Title>
       <SearchInput
         type="text"
