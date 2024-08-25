@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { LoginView, RegistrationView } from "./view";
+import { LoginView, RegistrationView, UsersView } from "./view";
 
 function App() {
   return (
@@ -9,6 +9,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginView />} />
           <Route path="/registration" element={<RegistrationView />} />
+          <Route path="/user-view" element={<UsersView />} />
         </Routes>
       </BrowserRouter>
     </>

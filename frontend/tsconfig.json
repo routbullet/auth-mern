@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "types": ["js-cookie"]
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

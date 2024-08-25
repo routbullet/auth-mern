@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Cookies from "js-cookie";
 
 const Container = styled.div`
   display: flex;
@@ -109,14 +110,13 @@ const StyledLink = styled(Link)`
 `;
 
 export const LoginView: React.FC = () => {
-  const [loginSuccessful, setLoginSuccessful] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
-    console.log("FormData content:", data);
 
     try {
       const response = await fetch("http://localhost:8000/login", {
@@ -128,7 +128,14 @@ export const LoginView: React.FC = () => {
       });
 
       if (response.status === 201) {
-        setLoginSuccessful(true);
+        const tokenData = await response.json();
+        Cookies.set("jwtToken", tokenData?.token, {
+          expires: 7,
+          secure: true,
+          sameSite: "Strict",
+        });
+
+        navigate("/user-view");
       } else {
         setError("Login failed. Please check your credentials and try again.");
       }
@@ -141,10 +148,6 @@ export const LoginView: React.FC = () => {
       console.error("An error occurred:", err);
     }
   };
-
-  if (loginSuccessful) {
-    return <div>Logged in successfully! Welcome to the dashboard.</div>;
-  }
 
   return (
     <Container>
