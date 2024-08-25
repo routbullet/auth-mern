@@ -69,6 +69,12 @@
 1. Install dependencies: `npm install`
 2. Start the development server: `npm run dev`
 
+## MongoDB Setup
+
+For local development, you can install and set up MongoDB on your machine by following the [official MongoDB installation guide](https://www.mongodb.com/docs/manual/installation/).
+
+For production, consider using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or another cloud-based MongoDB service.
+
 ## Environment Variables
 
 Make sure to create a `.env` file in the backend directory with the following environment variable:
