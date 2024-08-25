@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -114,13 +115,47 @@ const StyledLink = styled(Link)`
 `;
 
 export const RegistrationView = () => {
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    console.log("FormData content:", data);
+
+    try {
+      const response = await fetch("http://localhost:8000/registration", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 201) {
+        navigate("/");
+      } else {
+        setError("Login failed. Please check your credentials and try again.");
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+      console.error("An error occurred:", err);
+    }
+  };
+
   return (
     <Container>
       <FormWrapper>
         <Heading>Get Started</Heading>
         <SubHeading>Create your account now.</SubHeading>
 
-        <Form action="http://localhost:8000/registration" method="POST">
+        <Form onSubmit={handleSubmit}>
+          {/* <Form action="http://localhost:8000/registration" method="POST"> */}
           <FormGroup>
             <StyledLabel htmlFor="fullName">Full name:</StyledLabel>
             <Input type="text" name="fullName" id="fullName" required />
@@ -139,6 +174,7 @@ export const RegistrationView = () => {
           </FormGroup>
           <Button type="submit">Submit</Button>
         </Form>
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
         <Footer>
           <FooterText>
