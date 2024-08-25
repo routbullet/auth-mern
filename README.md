@@ -4,6 +4,14 @@
 
 `auth-mern` is a full-stack application built using the MERN stack (MongoDB, Express, React, Node.js) to demonstrate user authentication and authorization. The project is structured with separate folders for the backend and frontend, facilitating a clean separation of concerns and a streamlined development process.
 
+### Registration Screen
+![Screenshot 2024-08-25 at 3 11 56 PM](https://github.com/user-attachments/assets/a92d1cde-f995-4b55-afc5-34c30a2857b1)
+### Login Screen
+![Screenshot 2024-08-25 at 3 11 42 PM](https://github.com/user-attachments/assets/e6629a9a-8205-49c0-b7b0-6197a157c1fd)
+### User Screen After Authentication & Autherization
+![Screenshot 2024-08-25 at 3 14 59 PM](https://github.com/user-attachments/assets/d7e628e6-2c3b-49d7-8d6e-485db3a6caab)
+
+
 ## Project Structure
 
 - **Backend**: Contains the Express.js server with RESTful endpoints for user registration, login, and data retrieval. It uses MongoDB for data storage and JWT for secure authentication.
